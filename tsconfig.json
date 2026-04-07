@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "types": ["node", "bun"],
+    "strict": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "paths": {
+      "@lib": ["./src/lib"],
+      "@lib/*": ["./src/lib/*"],
+
+      "@lexicons": ["./generated/lexicons"],
+      "@lexicons/*": ["./generated/lexicons/*"]
+    },
+    "outDir": "build",
+    "skipLibCheck": true
+  },
+  "exclude": [
+    "node_modules",
+    
+    "lexicon.config.ts",
+    "drizzle.config.ts",
+    "vitest.config.ts"
+  ]
+}

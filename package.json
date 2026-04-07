@@ -1,0 +1,34 @@
+{
+  "name": "cat",
+  "dependencies": {
+    "@atproto/api": "^0.19.6",
+    "@atproto/lex": "^0.0.23",
+    "@atproto/lexicon": "^0.6.2",
+    "@atproto/oauth-client-node": "^0.3.17",
+    "drizzle-orm": "^1.0.0-beta.20",
+    "hono": "^4.12.11",
+    "jose": "^6.2.2",
+    "pg": "^8.20.0",
+    "vitest": "^4.1.3",
+    "zod": "^4.3.6"
+  },
+  "scripts": {
+    "start": "bun run db:migrate && NODE_ENV=production bun ./build/src/index.js",
+    "build": "bun run lex:gen && bun run lex:build && tsc",
+    "dev": "bun run --hot src/index.ts",
+    "db:push": "drizzle-kit push",
+    "db:gen": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "lex:gen": "bun lexicon.config.ts",
+    "lex:build": "rm -rf ./generated/lexicons && bunx lex build --out ./generated/lexicons",
+    "lex:all": "bun lex:gen && bun lex:build"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.11",
+    "@types/node": "^25.5.2",
+    "@types/pg": "^8.20.0",
+    "drizzle-kit": "^1.0.0-beta.20",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
+  }
+}

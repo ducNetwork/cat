@@ -1,0 +1,19 @@
+info:
+  name: User
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{xrpc_duc}}.users.getUser?id=@me"
+  params:
+    - name: id
+      value: "@me"
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "*.at": "typescript"
+  },
+  "json.schemas": [
+    {
+      "fileMatch": ["lexicons/**/*.json"],
+      "url": "https://prenaissance.github.io/atproto-lexicon-json-schema/v1.json"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+name: Development
+variables:
+  - name: handle
+    value: chimken.dev
+  - secret: true
+    name: token
+    disabled: true
+  - name: origin
+    value: https://korppu.s.msg.fish
+    disabled: true
+  - name: origin
+    value: http://127.0.0.1:3000
+  - name: xrpc_duc
+    value: http://127.0.0.1:3000/xrpc/fish.msg.duc
+  - name: xrpc_duc
+    value: https://korppu.s.msg.fish/xrpc/fish.msg.duc
+    disabled: true
+  - secret: true
+    name: refreshToken

@@ -1,0 +1,10 @@
+# deps
+node_modules/
+
+# generated
+generated/
+build/
+keys/
+
+# env
+.env
