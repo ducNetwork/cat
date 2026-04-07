@@ -1,0 +1,22 @@
+{
+  "id": "fish.msg.duc.authority.home",
+  "lexicon": 1,
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "literal:self",
+      "record": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "host"
+        ]
+      }
+    }
+  }
+}

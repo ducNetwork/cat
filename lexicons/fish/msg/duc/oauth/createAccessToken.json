@@ -1,0 +1,23 @@
+{
+  "id": "fish.msg.duc.oauth.createAccessToken",
+  "lexicon": 1,
+  "defs": {
+    "main": {
+      "type": "query",
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "accessToken": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "accessToken"
+          ]
+        }
+      }
+    }
+  }
+}
