@@ -1,6 +1,4 @@
 {
-  "id": "fish.msg.duc.oauth.createAccessToken",
-  "lexicon": 1,
   "defs": {
     "main": {
       "type": "query",
@@ -19,5 +17,7 @@
         }
       }
     }
-  }
+  },
+  "id": "fish.msg.duc.oauth.refreshAccess",
+  "lexicon": 1
 }

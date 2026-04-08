@@ -1,6 +1,10 @@
+import { UriString } from '@atproto/lex';
 import z from 'zod';
+import { normalizeUrl } from './url';
 
 const envSchema = z.object({
+  CAT_NAME: z.string(),
+
   SERVER_SECURE: z.string().transform(s => JSON.parse(s) as boolean),
   SERVER_HOST: z.string(),
   SERVER_DATABASE_URL: z.string(),
@@ -17,11 +21,11 @@ const rawEnv = envSchema.parse(Bun.env);
 export const env = {
   ...rawEnv,
   
-  SERVER_URL: new URL(
+  SERVER_URL: normalizeUrl(
     (rawEnv.SERVER_SECURE ? 'https' : 'http')
     + '://'
     + rawEnv.SERVER_HOST
-  ).toString(),
+  ) as UriString,
 
-  OAUTH_JWK_ALG: "ES256"
+  JWK_ALG: "ES256"
 };

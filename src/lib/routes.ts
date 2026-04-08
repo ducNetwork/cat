@@ -1,10 +1,10 @@
 import { NsidString } from '@atproto/lex';
 import { LexiconDoc } from '@atproto/lexicon';
-import { Context, TypedResponse, InferResponseType, Env } from 'hono';
+import chalk from 'chalk';
+import { Context, TypedResponse } from 'hono';
 import { BaseMime } from 'hono/utils/mime';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { scopes } from './oauth/scopes';
 
 interface RouteOutput { 
   encoding: BaseMime
@@ -16,6 +16,11 @@ export interface Route<O extends RouteOutput = any> {
 }
 
 export type Lexicon = Omit<LexiconDoc, 'id' | 'lexicon'>;
+
+export interface RouteFile {
+  lexicon?: Lexicon
+  route?: Route
+}
 
 export interface RouteCollection {
   lexicon?: LexiconDoc
@@ -30,36 +35,75 @@ export class RouteManager {
     this.root = root;
   }
 
-  public async load(dir: string) {
+  public async load(ext: RegExp, dir: string, setter: (file: RouteFile, nsid: string) => void) {
     const routesPath = path.join(this.root, dir);
     const routesDir = fs.readdirSync(routesPath, { recursive: true, withFileTypes: true });
     
     for (const dirent of routesDir) {
-      if (dirent.isFile()) {
-        const file = path.join(dirent.parentPath, dirent.name.split('.')[0]);
-        const nsid = file.replace(routesPath, '').replace('/', '').replaceAll('/', '.');
+      if (dirent.isFile() && ext.test(dirent.name)) {
+        const nameSplit = dirent.name.split('.');
+        const fileName = nameSplit.slice(0, nameSplit.length - 1).join('.');
+        const file = path.join(dirent.parentPath, fileName);
+        const nsid = file
+          .replace(routesPath, '')  // remove absolute path
+          .replace(fileName, '')    // remove file name
+          .replace('/', '')         // remove leading forward-slash
+          .replaceAll('/', '.')     // convert to NSID
+          + nameSplit[0];           // re-add file name
 
-        const ts = await import(file);
-
-        if (ts.route) console.log(`[Route] ${nsid}`);
-
-        // Add OAuth scopes
-        if (ts.scopes) scopes.scope(...ts.scopes);
-        
-        // Add route & lexicon
-        this.collections.set(nsid, {
-          lexicon: ts.lexicon 
-            ? {
-              id: nsid as NsidString,
-              lexicon: 1,
-              ...ts.lexicon
-            }
-            : undefined,
-
-          route: ts.route
-        })
+        setter(
+          await import(file), 
+          nsid
+        );
       }
     }
+  }
+
+  public addLex(nsid: string, lexicon: Lexicon) {
+    const existingCollection = this.collections.get(nsid);
+
+    this.collections.set(nsid, {
+      ...existingCollection,
+
+      lexicon: {
+        ...lexicon,
+
+        id: nsid as NsidString,
+        lexicon: 1,
+      }
+    })
+  }
+
+  public async loadLex(dir: string) {
+    await this.load(/^[^.]*\.lex\.ts$/gs, dir, (file, nsid) => {
+      console.log(`${chalk.blue('[Lexicon]')} ${nsid}`);
+
+      // add lexicon
+      if (file.lexicon) this.addLex(nsid, file.lexicon);
+    })
+  }
+
+  public addRoute(nsid: string, route: Route) {
+    const existingCollection = this.collections.get(nsid);
+
+    // add route
+    this.collections.set(nsid, {
+      ...existingCollection,
+      route
+    })
+  }
+
+  public async loadRoutes(dir: string) {
+    await this.load(/^[^.]*\.ts$/gs, dir, (file, nsid) => {
+      const existingCollection = this.collections.get(nsid);
+
+      console.log(
+        `${chalk.green('[Route]')} ${nsid} (${existingCollection?.lexicon?.defs.main.type ?? 'unknown'})`
+      );
+
+      // add route
+      if (file.route) this.addRoute(nsid, file.route); 
+    })
   }
 
   public generate(dir: string) {
@@ -77,7 +121,9 @@ export class RouteManager {
       const relativeFile = `./${nsidSplit[nsidSplit.length - 1]}.json`;
       const file = path.join(loc, relativeFile);
 
-      console.log(`[Lexicon] ${nsid} -> ${path.join(relativeLoc, relativeFile)}`);
+      console.log(
+        `${chalk.yellow('writing...')} ${path.join(relativeLoc, relativeFile)}`
+      );
 
       fs.writeFileSync(
         file, 

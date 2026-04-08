@@ -1,4 +1,4 @@
-import { Lexicon, Route } from '@lib/routes';
+import { Route } from '@lib/routes';
 import * as fish from '@lexicons/fish';
 import { $lex } from '@lib/lexicons';
 import { getOAuthClient } from '@lib/oauth/client';
@@ -8,44 +8,6 @@ import { HTTPException } from 'hono/http-exception';
 import crypto from 'node:crypto';
 import { tid } from '@lib/tid';
 import { generateAccessToken } from '@lib/oauth/tokens';
-
-export const lexicon: Lexicon = {
-  defs: {
-    main: {
-      type: 'query',
-      
-      parameters: {
-        type: 'params',
-        properties: {
-          code: { type: 'string' },
-          state: { type: 'string' },
-          iss: { type: 'string' },
-
-          error: { type: 'string' },
-          error_description: { type: 'string' },
-          error_uri: { type: 'string', format: 'uri' },
-        },
-        required: ['code', 'state']
-      },
-
-      output: {
-        encoding: 'application/json',
-        schema: {
-          type: 'object',
-          properties: {
-            refreshToken: { type: 'string' },
-            accessToken: { type: 'string' }
-          },
-          required: ['refreshToken', 'accessToken']
-        }
-      },
-
-      errors: [
-        { name: 'invalidSession' }
-      ]
-    }
-  }
-}
 
 export const route: Route<fish.msg.duc.oauth.callback.$Output> = async (c) => {
   const query = $lex(fish.msg.duc.oauth.callback.$params, c.req.query());

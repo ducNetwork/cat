@@ -20,7 +20,7 @@ export async function resolveAuthorityByDid(did: Did, endpoint: string) {
   if (!doc.success) return null;
 
   return {
-    host: normalizeUrl(doc.value.host)
+    cat: normalizeUrl(doc.value.cat)
   }
 }
 
@@ -34,12 +34,14 @@ export async function setAuthorityByDid(did: Did) {
 
   const agent = new Agent(session);
 
+  const record = fish.msg.duc.authority.home.$build({
+    cat: env.SERVER_URL
+  });
+
   await agent.com.atproto.repo.putRecord({
     rkey: 'self',
     collection: 'fish.msg.duc.authority.home',
     repo: did,
-    record: {
-      host: normalizeUrl(env.SERVER_URL)
-    }
+    record
   });
 }

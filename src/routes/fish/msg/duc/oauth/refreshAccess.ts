@@ -1,30 +1,11 @@
-import { Lexicon, Route } from '@lib/routes';
+import { Route } from '@lib/routes';
 import * as fish from '@lexicons/fish';
 import { HTTPException } from 'hono/http-exception';
 import { DB, db } from '@lib/db';
 import { tid } from '@lib/tid';
 import { decodeAccessToken, generateAccessToken } from '@lib/oauth/tokens';
 
-export const lexicon: Lexicon = {
-  defs: {
-    main: {
-      type: 'query',
-
-      output: {
-        encoding: 'application/json',
-        schema: {
-          type: 'object',
-          properties: {
-            accessToken: { type: 'string' }
-          },
-          required: ['accessToken']
-        }
-      }
-    }
-  }
-}
-
-export const route: Route<fish.msg.duc.oauth.getAccessToken.$Output> = async (c) => {
+export const route: Route<fish.msg.duc.oauth.refreshAccess.$Output> = async (c) => {
   const refreshToken = c.req.header('Authorization')?.replace('Bearer ', '');
   if (!refreshToken) throw new HTTPException(401);
 

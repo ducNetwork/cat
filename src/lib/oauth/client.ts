@@ -25,13 +25,13 @@ export async function getOAuthClient(): Promise<NodeOAuthClient> {
 
   client = new NodeOAuthClient({
     clientMetadata: {
-      client_name: "msgFish",
+      client_name: env.CAT_NAME,
       client_id: isLocal
         ? buildAtprotoLoopbackClientId({
             scope: AT_OAUTH_SCOPE,
             redirect_uris: [ OAUTH_REDIRECT_URI ],
           })
-        : new URL('/.well-known/oauth-client.json', env.SERVER_URL).toString(),
+        : new URL('/.well-known/atproto-oauth-meta.json', env.SERVER_URL).toString(),
       scope: AT_OAUTH_SCOPE,
       redirect_uris: [ OAUTH_REDIRECT_URI ],
       response_types: ["code"],

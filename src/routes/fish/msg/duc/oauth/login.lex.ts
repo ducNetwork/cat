@@ -1,0 +1,35 @@
+import { Lexicon } from '@lib/routes';
+
+export const lexicon: Lexicon = {
+  defs: {
+    main: {
+      type: 'query',
+
+      parameters: {
+        type: 'params',
+        properties: {
+          handle: { type: 'string' },
+          client_id: { type: 'string', format: 'uri' },
+          redirect_uri: { type: 'string', format: 'uri' }
+        },
+        required: ['handle', 'redirect_uri']
+      },
+
+      output: {
+        encoding: 'application/json',
+        schema: {
+          type: 'object',
+          properties: {
+            href: { type: 'string', format: 'uri' }
+          },
+          required: ['href']
+        }
+      },
+      
+      errors: [
+        { name: 'userNotFound', description: "The specified user couldn't be found" },
+        { name: 'userAlreadyHasHome', description: "The specified user already has a home authority" }
+      ]
+    }
+  }
+}

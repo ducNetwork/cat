@@ -16,9 +16,5 @@
   },
   "exclude": [
     "node_modules",
-    
-    "lexicon.config.ts",
-    "drizzle.config.ts",
-    "vitest.config.ts"
   ]
 }

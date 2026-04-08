@@ -8,9 +8,9 @@ export const lexicon: Lexicon = {
       record: {
         type: 'object',
         properties: {
-          host: { type: 'string', format: 'uri' }
+          cat: { type: 'string', format: 'uri' }
         },
-        required: ['host']
+        required: ['cat']
       }
     }
   }

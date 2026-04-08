@@ -1,6 +1,4 @@
 {
-  "id": "fish.msg.duc.authority.home",
-  "lexicon": 1,
   "defs": {
     "main": {
       "type": "record",
@@ -8,15 +6,17 @@
       "record": {
         "type": "object",
         "properties": {
-          "host": {
+          "cat": {
             "type": "string",
             "format": "uri"
           }
         },
         "required": [
-          "host"
+          "cat"
         ]
       }
     }
-  }
+  },
+  "id": "fish.msg.duc.authority.home",
+  "lexicon": 1
 }

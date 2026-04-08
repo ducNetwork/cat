@@ -1,6 +1,4 @@
 {
-  "id": "fish.msg.duc.oauth.callback",
-  "lexicon": 1,
   "defs": {
     "main": {
       "type": "query",
@@ -56,5 +54,7 @@
         }
       ]
     }
-  }
+  },
+  "id": "fish.msg.duc.oauth.callback",
+  "lexicon": 1
 }

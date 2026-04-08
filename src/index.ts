@@ -3,13 +3,14 @@ import { RouteManager } from '@lib/routes'
 import { Hono } from 'hono'
 
 const rm = new RouteManager(__dirname);
-rm.load('./routes');
+rm.loadLex('./routes');
+rm.loadRoutes('./routes');
 
 const app = new Hono()
 
   .route('/.well-known', new Hono()
   
-    .get('/oauth-client.json', async (c) => {
+    .get('/atproto-oauth-meta.json', async (c) => {
       const client = await getOAuthClient();
       return c.json(client.clientMetadata);
     })

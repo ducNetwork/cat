@@ -17,7 +17,7 @@ export async function getJWK() {
   }
 
   if (!privKey || !pubKey) {
-    const keyPair = await generateKeyPair(env.OAUTH_JWK_ALG, {
+    const keyPair = await generateKeyPair(env.JWK_ALG, {
       crv: 'P-256'
     });
 
@@ -25,11 +25,11 @@ export async function getJWK() {
 
     privKey = await exportJWK(keyPair.privateKey);
     privKey.kid = kid;
-    privKey.alg = env.OAUTH_JWK_ALG;
+    privKey.alg = env.JWK_ALG;
 
     pubKey = await exportJWK(keyPair.publicKey);
     pubKey.kid = kid;
-    pubKey.alg = env.OAUTH_JWK_ALG;
+    pubKey.alg = env.JWK_ALG;
     pubKey.use = "sig";
     
 
@@ -44,7 +44,7 @@ export async function getJWK() {
 }
 
 export async function getCryptoKeyFromJwk(jwk: JWK) {
-  return await importJWK(jwk, env.OAUTH_JWK_ALG);
+  return await importJWK(jwk, env.JWK_ALG);
 }
 
 export const JWKs = createRemoteJWKSet(
@@ -61,12 +61,12 @@ export async function generateAccessToken(data: AccessTokenPayload) {
 
   const token = await new SignJWT(data)
     .setProtectedHeader({
-      alg: env.OAUTH_JWK_ALG,
+      alg: env.JWK_ALG,
       kid: privJwk.kid
     })
     .setIssuedAt()
     .setIssuer(env.SERVER_URL)
-    .setExpirationTime('30 mins')
+    .setExpirationTime('30 mins') // this should never change
     .sign(privJwk)
 
   return token;

@@ -1,6 +1,4 @@
 {
-  "id": "fish.msg.duc.oauth.login",
-  "lexicon": 1,
   "defs": {
     "main": {
       "type": "query",
@@ -9,6 +7,10 @@
         "properties": {
           "handle": {
             "type": "string"
+          },
+          "client_id": {
+            "type": "string",
+            "format": "uri"
           },
           "redirect_uri": {
             "type": "string",
@@ -46,5 +48,7 @@
         }
       ]
     }
-  }
+  },
+  "id": "fish.msg.duc.oauth.login",
+  "lexicon": 1
 }
