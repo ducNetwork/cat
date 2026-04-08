@@ -3,7 +3,7 @@ import { createRemoteJWKSet, jwtVerify, SignJWT, exportJWK, generateKeyPair, imp
 import * as path from 'path';
 
 export async function getJWK() {
-  const key_path = env.AT_OAUTH_JWK_PATH ?? './keys';
+  const key_path = env.CAT_JWK_PATH ?? './keys';
 
   const privFile = Bun.file(path.join(key_path, './oauth_jwk.priv'));
   const pubFile = Bun.file(path.join(key_path, './oauth_jwk.pub'));
@@ -48,7 +48,7 @@ export async function getCryptoKeyFromJwk(jwk: JWK) {
 }
 
 export const JWKs = createRemoteJWKSet(
-  new URL('/.well-known/jwks.json', env.SERVER_URL)
+  new URL('/.well-known/jwks.json', env.CAT_URL)
 );
 
 interface AccessTokenPayload extends JWTPayload {
@@ -65,7 +65,7 @@ export async function generateAccessToken(data: AccessTokenPayload) {
       kid: privJwk.kid
     })
     .setIssuedAt()
-    .setIssuer(env.SERVER_URL)
+    .setIssuer(env.CAT_URL)
     .setExpirationTime('30 mins') // this should never change
     .sign(privJwk)
 

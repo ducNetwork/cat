@@ -35,7 +35,7 @@ export async function setAuthorityByDid(did: Did) {
   const agent = new Agent(session);
 
   const record = fish.msg.duc.authority.home.$build({
-    cat: env.SERVER_URL
+    cat: env.CAT_URL
   });
 
   await agent.com.atproto.repo.putRecord({

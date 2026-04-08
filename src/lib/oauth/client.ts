@@ -12,14 +12,14 @@ export const AT_OAUTH_SCOPE = [
   ...scopes.scopes
 ].join(' ');
 
-export const OAUTH_REDIRECT_URI = new URL(env.AT_OAUTH_CALLBACK, env.SERVER_URL).toString();
+export const OAUTH_REDIRECT_URI = new URL(env.AT_OAUTH_CALLBACK, env.CAT_URL).toString();
 
 let client: NodeOAuthClient | null = null;
 
 export async function getOAuthClient(): Promise<NodeOAuthClient> {
   if (client) return client;
 
-  const isLocal = env.SERVER_URL.startsWith('http:');
+  const isLocal = env.CAT_URL.startsWith('http:');
 
   console.log('SCOPES: ' + AT_OAUTH_SCOPE.replaceAll(' ', ', '));
 
@@ -31,7 +31,7 @@ export async function getOAuthClient(): Promise<NodeOAuthClient> {
             scope: AT_OAUTH_SCOPE,
             redirect_uris: [ OAUTH_REDIRECT_URI ],
           })
-        : new URL('/.well-known/atproto-oauth-meta.json', env.SERVER_URL).toString(),
+        : new URL('/.well-known/atproto-oauth-meta.json', env.CAT_URL).toString(),
       scope: AT_OAUTH_SCOPE,
       redirect_uris: [ OAUTH_REDIRECT_URI ],
       response_types: ["code"],

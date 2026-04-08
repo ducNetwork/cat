@@ -28,7 +28,7 @@ export const route: Route<fish.msg.duc.oauth.login.$Output> = async (c) => {
 
   const authority = await resolveAuthorityByDid(did, endpoint);
 
-  if (authority && authority.cat !== env.SERVER_URL) {
+  if (authority && authority.cat !== env.CAT_URL) {
     throw new HTTPException(403, { message: 'userAlreadyHasHome' });
   }
 

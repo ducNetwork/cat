@@ -32,7 +32,7 @@ const relations = defineRelations({
   }
 }));
 
-export const db = drizzle(env.SERVER_DATABASE_URL, { relations });
+export const db = drizzle(env.CAT_DATABASE_URL, { relations });
 
 export const DB = {
   atproto_auth_session,
