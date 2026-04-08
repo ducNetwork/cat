@@ -1,7 +1,7 @@
 name: Development
 variables:
-  - name: handle
-    value: chimken.dev
+  - secret: true
+    name: handle
   - secret: true
     name: token
     disabled: true
