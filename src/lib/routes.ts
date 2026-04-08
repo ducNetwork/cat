@@ -75,7 +75,7 @@ export class RouteManager {
   }
 
   public async loadLex(dir: string) {
-    await this.load(/^[^.]*\.lex\.ts$/gs, dir, (file, nsid) => {
+    await this.load(/^[^.]*\.lex\.(ts|js)$/gs, dir, (file, nsid) => {
       console.log(`${chalk.blue('[Lexicon]')} ${nsid}`);
 
       // add lexicon
@@ -94,7 +94,7 @@ export class RouteManager {
   }
 
   public async loadRoutes(dir: string) {
-    await this.load(/^[^.]*\.ts$/gs, dir, (file, nsid) => {
+    await this.load(/^[^.]*\.(ts|js)$/gs, dir, (file, nsid) => {
       const existingCollection = this.collections.get(nsid);
 
       console.log(
