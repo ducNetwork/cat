@@ -13,6 +13,7 @@ export const scopes = [
   'repo:fish.msg.duc.actor.profile'
 ];
 
+// @ts-ignore TODO: figure out output type error
 export const route: Route<fish.msg.duc.users.updateProfile.$Output> = async (c) => {
   const auth = await Auth(c);
   const body = $lex(fish.msg.duc.users.updateProfile.$input.schema, await c.req.json());
@@ -64,6 +65,17 @@ export const route: Route<fish.msg.duc.users.updateProfile.$Output> = async (c) 
 
   return c.json({
     encoding: 'application/json',
-    body: record
+    body: {
+      $type: 'fish.msg.duc.actor.profile',
+      displayName: record.displayName,
+      avatar: record.avatar 
+        ? {
+          $type: 'blob',
+          mimeType: record.avatar.mimeType,
+          ref: record.avatar.ref,
+          size: record.avatar.size
+        }
+        : undefined
+    }
   })
 }

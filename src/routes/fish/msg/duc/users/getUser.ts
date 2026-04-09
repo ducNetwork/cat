@@ -6,6 +6,7 @@ import { resolveDid, resolveDidByHandle } from '@lib/atproto';
 import { HandleString } from '@atproto/lex';
 import { getProfile } from '../actor/profile.func';
 
+// @ts-ignore TODO: figure out output type error
 export const route: Route<fish.msg.duc.users.getUser.$Output> = async (c) => {
   const query = $lex(fish.msg.duc.users.getUser.$params, c.req.query());
 
