@@ -1,0 +1,22 @@
+{
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "literal:self",
+      "record": {
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "ref",
+            "ref": "at.ducs.users.defs#avatar"
+          }
+        }
+      }
+    }
+  },
+  "id": "at.ducs.actor.profile",
+  "lexicon": 1
+}

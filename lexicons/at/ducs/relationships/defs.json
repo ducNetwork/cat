@@ -1,0 +1,26 @@
+{
+  "defs": {
+    "relationship": {
+      "type": "object",
+      "properties": {
+        "did": {
+          "type": "string",
+          "format": "did"
+        },
+        "type": {
+          "type": "ref",
+          "ref": "at.ducs.relationships.setRelationship#type"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "active"
+          ]
+        }
+      }
+    }
+  },
+  "id": "at.ducs.relationships.defs",
+  "lexicon": 1
+}

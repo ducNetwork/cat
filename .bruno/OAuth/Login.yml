@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{xrpc_duc}}.oauth.login?handle={{handle}}&redirect_uri=http://127.0.0.1:3000/session"
+  url: "{{xrpc}}.oauth.login?handle={{handle}}&redirect_uri=http://127.0.0.1:3000/session"
   params:
     - name: handle
       value: "{{handle}}"

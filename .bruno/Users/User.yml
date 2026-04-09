@@ -5,9 +5,9 @@ info:
 
 http:
   method: GET
-  url: "{{xrpc_duc}}.users.getUser?handle={{handle}}"
+  url: "{{xrpc}}.users.getUser?id={{handle}}"
   params:
-    - name: handle
+    - name: id
       value: "{{handle}}"
       type: query
   auth: inherit

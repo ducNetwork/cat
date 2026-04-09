@@ -1,0 +1,22 @@
+{
+  "defs": {
+    "main": {
+      "type": "record",
+      "key": "literal:self",
+      "record": {
+        "type": "object",
+        "properties": {
+          "cat": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "cat"
+        ]
+      }
+    }
+  },
+  "id": "at.ducs.actor.home",
+  "lexicon": 1
+}

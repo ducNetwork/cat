@@ -2,19 +2,13 @@ name: Development
 variables:
   - secret: true
     name: handle
-  - secret: true
-    name: token
-    disabled: true
   - name: origin
     value: https://korppu.s.msg.fish
     disabled: true
   - name: origin
     value: http://127.0.0.1:3000
-  - name: xrpc_duc
-    value: http://127.0.0.1:3000/xrpc/fish.msg.duc
-  - name: xrpc_duc
-    value: https://korppu.s.msg.fish/xrpc/fish.msg.duc
-    disabled: true
+  - name: xrpc
+    value: "{{origin}}/xrpc/at.ducs"
   - secret: true
     name: refreshToken
   - secret: true

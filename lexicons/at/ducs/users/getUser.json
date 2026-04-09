@@ -1,0 +1,41 @@
+{
+  "defs": {
+    "main": {
+      "type": "query",
+      "parameters": {
+        "type": "params",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "at-identifier"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "output": {
+        "encoding": "application/json",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "user": {
+              "type": "ref",
+              "ref": "at.ducs.users.defs#user"
+            }
+          },
+          "required": [
+            "user"
+          ]
+        }
+      },
+      "errors": [
+        {
+          "name": "profileNotFound"
+        }
+      ]
+    }
+  },
+  "id": "at.ducs.users.getUser",
+  "lexicon": 1
+}

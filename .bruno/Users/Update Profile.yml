@@ -5,12 +5,12 @@ info:
 
 http:
   method: POST
-  url: "{{xrpc_duc}}.users.updateProfile"
+  url: "{{xrpc}}.users.updateProfile"
   body:
     type: json
     data: |-
       {
-        "displayName": "testing"
+        "displayName": "netchimken"
       }
   auth:
     type: bearer

@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{xrpc_duc}}.oauth.refreshAccess"
+  url: "{{xrpc}}.oauth.refreshAccess"
   auth:
     type: bearer
     token: "{{refreshToken}}"

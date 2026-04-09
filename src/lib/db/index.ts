@@ -29,6 +29,20 @@ const relations = defineRelations({
       to: r.users.did,
       optional: false
     })
+  },
+
+  relationships: {
+    from: r.one.users({
+      from: r.relationships.fromDid,
+      to: r.users.did,
+      optional: false
+    }),
+    
+    to: r.one.users({
+      from: r.relationships.fromDid,
+      to: r.users.did,
+      optional: false
+    })
   }
 }));
 
