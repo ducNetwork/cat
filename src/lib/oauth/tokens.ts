@@ -72,7 +72,7 @@ export async function generateAccessToken(data: AccessTokenPayload) {
   return token;
 }
 
-export async function decodeAccessToken(token: string) {
+export async function verifyAccessToken(token: string) {
   try {
     const { payload } = await jwtVerify(token, JWKs);
     return payload as AccessTokenPayload;

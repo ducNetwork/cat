@@ -24,7 +24,10 @@
     "lex:build": "bun run lex:rm-build && bunx lex build --out ./generated/lexicons",
     "lex:rm-gen": "rm -rf ./lexicons/fish",
     "lex:rm-build": "rm -rf ./generated/lexicons",
-    "lex:all": "bun lex:gen && bun lex:build"
+    "lex:all": "bun lex:gen && bun lex:build",
+    "lex:status": "bunx goat lex status ./lexicons/fish",
+    "lex:lint": "bunx goat lex lint ./lexicons/fish",
+    "lex:publish": "bunx goat lex publish ./lexicons/fish"
   },
   "devDependencies": {
     "@types/bun": "^1.3.11",

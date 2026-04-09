@@ -1,16 +1,17 @@
 import { Route } from '@lib/routes';
 import { $lex } from '@lib/lexicons';
 import * as fish from '@lexicons/fish';
-import { AT_OAUTH_SCOPE, getOAuthClient } from '@lib/oauth/client';
+import { getOAuthClient } from '@lib/oauth/client';
 import z from 'zod';
 import { UriString } from '@atproto/lex';
 import { resolveDidByHandle } from '@lib/atproto';
 import { env } from '@lib/env';
 import { HTTPException } from 'hono/http-exception';
 import { resolveAuthorityByDid } from '../authority/home.util';
+import { globalScopes } from '@lib/oauth/scopes';
 
 export const scopes = [
-  "repo:fish.msg.duc.authority.home"
+  "repo:fish.msg.duc.actor.home"
 ]
 
 export const oauthStateSchema = z.object({
@@ -37,7 +38,7 @@ export const route: Route<fish.msg.duc.oauth.login.$Output> = async (c) => {
   const ac = new AbortController();
   const url = await client.authorize(query.handle, {
     signal: ac.signal,
-    scope: AT_OAUTH_SCOPE,
+    scope: globalScopes.toString(),
     state: JSON.stringify(
       oauthStateSchema.parse({
         redirect_uri: query.redirect_uri

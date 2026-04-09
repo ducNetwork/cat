@@ -5,10 +5,10 @@ info:
 
 http:
   method: GET
-  url: "{{xrpc_duc}}.users.getUser?id=@me"
+  url: "{{xrpc_duc}}.users.getUser?handle={{handle}}"
   params:
-    - name: id
-      value: "@me"
+    - name: handle
+      value: "{{handle}}"
       type: query
   auth: inherit
 

@@ -4,13 +4,8 @@ import { db } from '../db';
 import { atproto_auth_session } from '@lib/db/schema/oauth';
 import { atproto_auth_states } from '@lib/db/schema/oauth';
 import { eq } from 'drizzle-orm';
-import { scopes } from './scopes';
+import { globalScopes } from './scopes';
 import { getJWK } from './tokens';
-
-export const AT_OAUTH_SCOPE = [
-  'atproto',
-  ...scopes.scopes
-].join(' ');
 
 export const OAUTH_REDIRECT_URI = new URL(env.AT_OAUTH_CALLBACK, env.CAT_URL).toString();
 
@@ -21,18 +16,16 @@ export async function getOAuthClient(): Promise<NodeOAuthClient> {
 
   const isLocal = env.CAT_URL.startsWith('http:');
 
-  console.log('SCOPES: ' + AT_OAUTH_SCOPE.replaceAll(' ', ', '));
-
   client = new NodeOAuthClient({
     clientMetadata: {
       client_name: env.CAT_NAME,
       client_id: isLocal
         ? buildAtprotoLoopbackClientId({
-            scope: AT_OAUTH_SCOPE,
+            scope: globalScopes.toString(),
             redirect_uris: [ OAUTH_REDIRECT_URI ],
           })
         : new URL('/.well-known/atproto-oauth-meta.json', env.CAT_URL).toString(),
-      scope: AT_OAUTH_SCOPE,
+      scope: globalScopes.toString(),
       redirect_uris: [ OAUTH_REDIRECT_URI ],
       response_types: ["code"],
       grant_types: ["authorization_code", "refresh_token"],

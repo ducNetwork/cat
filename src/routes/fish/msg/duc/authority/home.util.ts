@@ -8,19 +8,23 @@ import { env } from '@lib/env';
 import { normalizeUrl } from '@lib/url';
 
 export async function resolveAuthorityByDid(did: Did, endpoint: string) {
-  const res = await xrpc(endpoint, com.atproto.repo.getRecord, {
-    params: {
-      rkey: 'self',
-      collection: 'fish.msg.duc.authority.home',
-      repo: did
+  try {
+    const res = await xrpc(endpoint, com.atproto.repo.getRecord, {
+      params: {
+        rkey: 'self',
+        collection: 'fish.msg.duc.actor.home',
+        repo: did
+      }
+    });
+
+    const doc = fish.msg.duc.actor.home.$safeParse(res.body.value);
+    if (!doc.success) return null;
+
+    return {
+      cat: normalizeUrl(doc.value.cat)
     }
-  });
-
-  const doc = fish.msg.duc.authority.home.$safeParse(res.body.value);
-  if (!doc.success) return null;
-
-  return {
-    cat: normalizeUrl(doc.value.cat)
+  } catch (err) {
+    return null;
   }
 }
 
@@ -34,13 +38,13 @@ export async function setAuthorityByDid(did: Did) {
 
   const agent = new Agent(session);
 
-  const record = fish.msg.duc.authority.home.$build({
+  const record = fish.msg.duc.actor.home.$build({
     cat: env.CAT_URL
   });
 
   await agent.com.atproto.repo.putRecord({
     rkey: 'self',
-    collection: 'fish.msg.duc.authority.home',
+    collection: 'fish.msg.duc.actor.home',
     repo: did,
     record
   });

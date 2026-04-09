@@ -1,8 +1,9 @@
 import { OAuthSession } from '@atproto/oauth-client-node';
-import { createMiddleware } from 'hono/factory';
 import { getOAuthClient } from './client';
-import { db, DB } from '../db';
 import { Context } from 'hono';
+import { verifyAccessToken } from './tokens';
+import { HTTPException } from 'hono/http-exception';
+import { DidString } from '@atproto/lex';
 
 export async function getATProtoSession(did: string): Promise<OAuthSession | null> {
   try {
@@ -13,32 +14,15 @@ export async function getATProtoSession(did: string): Promise<OAuthSession | nul
   }
 }
 
-export interface AuthVariables {
-  user: typeof DB.users.$inferSelect
-  session: typeof DB.auth_sessions.$inferSelect
-}
+export async function Auth(c: Context) {
+  const authorization = c.req.header('Authorization');
+  if (!authorization) throw new HTTPException(401);
 
-export function Auth() {
-  return createMiddleware<{
-    Variables: AuthVariables
-  }>(async (c, next) => {
-    const authorization = c.req.header('Authorization') ?? c.req.query('___authorization');
-    if (!authorization) return c.text("No authorization token passed", 401);
+  const token = authorization.replace("Bearer ", "");
+  const payload = await verifyAccessToken(token);
+  if (!payload) throw new HTTPException(401);
 
-    const token = authorization.replace("Bearer ", "");
-    const session = await db.query.auth_sessions.findFirst({ 
-      where: { token },
-      with: { user: true }
-    });
-    if (!session) return c.text("Invalid authorization token", 401);
-
-    c.set('session', session);
-    c.set('user', session.user);
-
-    return await next();
-  });
-}
-
-export function getAuth(c: Context) {
-  return c.var.user as typeof DB.users.$inferSelect;
+  return {
+    did: payload.sub as DidString
+  }
 }

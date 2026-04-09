@@ -3,7 +3,7 @@ import * as fish from '@lexicons/fish';
 import { HTTPException } from 'hono/http-exception';
 import { DB, db } from '@lib/db';
 import { tid } from '@lib/tid';
-import { decodeAccessToken, generateAccessToken } from '@lib/oauth/tokens';
+import { generateAccessToken } from '@lib/oauth/tokens';
 
 export const route: Route<fish.msg.duc.oauth.refreshAccess.$Output> = async (c) => {
   const refreshToken = c.req.header('Authorization')?.replace('Bearer ', '');
@@ -30,8 +30,6 @@ export const route: Route<fish.msg.duc.oauth.refreshAccess.$Output> = async (c) 
     sub: user.did,
     authId: auth_settings.authId
   });
-
-  console.log(await decodeAccessToken(accessToken));
 
   return c.json({
     encoding: 'application/json',

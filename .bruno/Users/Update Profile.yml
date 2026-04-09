@@ -1,0 +1,23 @@
+info:
+  name: Update Profile
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{xrpc_duc}}.users.updateProfile"
+  body:
+    type: json
+    data: |-
+      {
+        "displayName": "testing"
+      }
+  auth:
+    type: bearer
+    token: "{{accessToken}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
