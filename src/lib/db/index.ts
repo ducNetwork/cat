@@ -4,6 +4,7 @@ import { env } from '@lib/env';
 import { authorities } from './schema/authorites';
 import { relationships, users } from './schema/users';
 import { atproto_auth_session, atproto_auth_states, auth_sessions, auth_settings } from './schema/oauth';
+import { channelMemberships, channels } from './schema/channels';
 
 const relations = defineRelations({
   atproto_auth_session,
@@ -13,7 +14,10 @@ const relations = defineRelations({
 
   authorities,
   users,
-  relationships
+  relationships,
+
+  channels,
+  channelMemberships,
 }, (r) => ({
   auth_sessions: {
     user: r.one.users({
@@ -43,6 +47,20 @@ const relations = defineRelations({
       to: r.users.did,
       optional: false
     })
+  },
+
+  channelMemberships: {
+    user: r.one.users({
+      from: r.channelMemberships.userDid,
+      to: r.users.did,
+      optional: false
+    }),
+
+    channel: r.one.channels({
+      from: r.channelMemberships.channelTid,
+      to: r.channels.tid,
+      optional: false
+    })
   }
 }));
 
@@ -56,5 +74,8 @@ export const DB = {
 
   authorities,
   users,
-  relationships
+  relationships,
+
+  channels,
+  channelMemberships,
 }

@@ -5,37 +5,33 @@
       "parameters": {
         "type": "params",
         "properties": {
-          "id": {
+          "limit": {
+            "type": "integer",
+            "default": 20
+          },
+          "beforeTid": {
             "type": "string",
-            "format": "at-identifier"
+            "format": "tid"
           }
-        },
-        "required": [
-          "id"
-        ]
+        }
       },
       "output": {
         "encoding": "application/json",
         "schema": {
           "type": "object",
           "properties": {
-            "user": {
+            "channels": {
               "type": "ref",
-              "ref": "at.ducs.users.defs#user"
+              "ref": "at.ducs.channels.defs#channel"
             }
           },
           "required": [
-            "user"
+            "channels"
           ]
         }
-      },
-      "errors": [
-        {
-          "name": "profileNotFound"
-        }
-      ]
+      }
     }
   },
-  "id": "at.ducs.users.getUser",
+  "id": "at.ducs.channels.getChannels",
   "lexicon": 1
 }

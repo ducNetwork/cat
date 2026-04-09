@@ -9,7 +9,7 @@ export const lexicon: Lexicon = {
         type: 'params',
         properties: {
           limit: { type: 'integer', default: 20 },
-          beforeDid: { type: 'string', format: 'did' }
+          beforeTid: { type: 'string', format: 'tid' }
         }
       },
 
@@ -18,14 +18,12 @@ export const lexicon: Lexicon = {
         schema: {
           type: 'object',
           properties: {
-            relationships: {
-              type: 'array',
-              items: {
-                type: 'ref',
-                ref: 'at.ducs.relationships.defs#relationship'
-              }
+            channels: {
+              type: 'ref',
+              ref: 'at.ducs.channels.defs#channel'
             }
-          }
+          },
+          required: ['channels']
         }
       }
     }

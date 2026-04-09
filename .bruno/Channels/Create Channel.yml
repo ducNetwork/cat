@@ -1,0 +1,22 @@
+info:
+  name: Create Channel
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{xrpc}}.channels.createChannel"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "testing",
+        "members": ["vixoat.me"]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
