@@ -7,6 +7,7 @@ import { Agent, BlobRef } from '@atproto/api';
 import { HTTPException } from 'hono/http-exception';
 import { getProfileRecord, setProfileRecord } from '../actor/profile.util';
 import { env } from '@lib/env';
+import { resolveDid } from '@lib/atproto';
 
 export const scopes = [
   'repo:at.ducs.actor.profile',
@@ -39,7 +40,10 @@ export const route: Route<at.ducs.users.updateProfile.$Output> = async (c) => {
     avatar = res.data.blob;
   }
 
-  const profile = await getProfileRecord(auth.did);
+  const doc = await resolveDid(auth.did);
+  if (!doc) throw new HTTPException(500);
+
+  const profile = await getProfileRecord(doc);
 
   const record = at.ducs.actor.profile.$build({
     avatar: avatar
