@@ -22,7 +22,7 @@ export const lexicon: Lexicon = {
               type: 'array',
               items: {
                 type: 'ref',
-                ref: 'at.ducs.users.defs#user'
+                ref: 'at.ducs.users.defs#profile'
               }
             },
 

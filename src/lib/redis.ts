@@ -1,6 +1,9 @@
-import { DB } from './db';
+import { AtIdentifierString, DidString, HandleString } from '@atproto/lex';
+import { db, DB } from './db';
 import { env } from './env';
 import { RedisClient } from 'bun';
+import * as at from '@lexicons/at';
+import { eq } from 'drizzle-orm';
 
 function createRedisClient() {
   return new RedisClient(env.CAT_REDIS_URL);
@@ -55,6 +58,57 @@ export class RedisPublisher {
 
   publish<T extends MessageTypeNames>(channel: string, type: T, data: Message<T>['data']): Promise<number> {
     return this.client.publish(channel, JSON.stringify({ type, data }));
+  }
+
+  async setKeys(
+    data: {
+      [k in string]: string
+    }
+  ) {
+    for (const [key, value] of Object.entries(data)) {
+      await this.client.set(
+        key, value,
+        'EX', env.CAT_PROFILE_REDIS_TTL
+      );
+    }
+  }
+
+  async setProfile(profile: at.ducs.users.defs.Profile) {
+    await this.setKeys({
+      [`profile/${profile.did}`]: JSON.stringify(profile),
+      [`profile/${profile.handle}`]: JSON.stringify(profile),
+    });
+
+    await db
+      .update(DB.users)
+      .set({
+        ...profile,
+        indexedAt: new Date()
+      })
+      .where(eq(DB.users.did, profile.did));
+  }
+
+  async getProfile(id: AtIdentifierString) {
+    const redisProfile = await this.client.get(`profile/${id}`);;
+    if (redisProfile) return JSON.parse(redisProfile) as at.ducs.users.defs.Profile;
+
+    const databaseProfile = await db.query.users.findFirst({
+      where: id.startsWith('did:plc:')
+        ? { did: id as DidString }
+        : { handle: id as HandleString }
+    });
+
+    if (
+      databaseProfile && 
+      (databaseProfile.indexedAt.getTime() + (env.CAT_PROFILE_INDEX_TTL * 1000)) > Date.now()
+    ) return {
+      did: databaseProfile.did,
+      handle: databaseProfile.handle,
+      displayName: databaseProfile.displayName ?? undefined,
+      avatar: databaseProfile.avatar ?? undefined
+    }
+
+    return null;
   }
 }
 

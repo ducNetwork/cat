@@ -1,6 +1,6 @@
 {
   "defs": {
-    "user": {
+    "profile": {
       "type": "object",
       "properties": {
         "did": {

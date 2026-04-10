@@ -26,7 +26,7 @@ export const lexicon: Lexicon = {
         encoding: 'application/json',
         schema: {
           type: 'ref',
-          ref: 'at.ducs.actor.profile'
+          ref: 'at.ducs.users.defs#profile'
         }
       },
 

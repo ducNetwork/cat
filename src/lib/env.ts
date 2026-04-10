@@ -13,7 +13,8 @@ const envSchema = z.object({
     .transform(s => s.replaceAll(', ', ',').split(','))
     .default(['image/png=png', 'image/jpeg=jpg/jpeg']),
 
-  CAT_PROFILE_INDEX_TIMEOUT: z.number().default(60),
+  CAT_PROFILE_INDEX_TTL: z.number().default(300),
+  CAT_PROFILE_REDIS_TTL: z.number().default(60),
 
   AT_OAUTH_CALLBACK: z.string(),
   AT_RESOLVER_URL: z.url()

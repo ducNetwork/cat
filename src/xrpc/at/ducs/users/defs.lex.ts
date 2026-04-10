@@ -2,7 +2,7 @@ import { Lexicon } from '@lib/routes';
 
 export const lexicon: Lexicon = {
   defs: {
-    user: {
+    profile: {
       type: 'object',
       properties: {
         did: { type: 'string', format: 'did' },

@@ -1,15 +1,15 @@
 import { pgEnum, pgTable, primaryKey, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { authorities } from './authorites';
-import { DidString, UriString } from '@atproto/lex';
+import { DidString, HandleString, UriString } from '@atproto/lex';
 
 export const users = pgTable("users", {
   did: varchar().$type<DidString>().primaryKey(),
-  handle: varchar().notNull(),
+  handle: varchar().$type<HandleString>().notNull(),
   displayName: varchar(),
   avatar: varchar().$type<UriString>(),
   homeHost: varchar().references(() => authorities.host),
 
-  indexedAt: timestamp(),
+  indexedAt: timestamp().notNull().defaultNow(),
 });
 
 export const relationshipType = pgEnum("relationshipType", ['friend', 'blocked']);

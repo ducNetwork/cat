@@ -8,13 +8,16 @@ import { HTTPException } from 'hono/http-exception';
 import { getProfileRecord, setProfileRecord } from '../actor/profile.util';
 import { env } from '@lib/env';
 import { resolveDid } from '@lib/atproto';
+import { buildAvatarUri, resolveHandleByDidDoc } from './getProfiles.util';
+import { DB, db } from '@lib/db';
+import { eq } from 'drizzle-orm';
+import { redis, sub } from '@lib/redis';
 
 export const scopes = [
   'repo:at.ducs.actor.profile',
   ...env.CAT_ACCEPT_MIMETYPE.map(t => 'blob:' + t)
 ];
 
-// @ts-ignore TODO: figure out output type error
 export const route: Route<at.ducs.users.updateProfile.$Output> = async (c) => {
   const auth = await Auth(c);
   const body = $lex(at.ducs.users.updateProfile.$input.schema, await c.req.json());
@@ -23,7 +26,7 @@ export const route: Route<at.ducs.users.updateProfile.$Output> = async (c) => {
   const session = await client.restore(auth.did);
   const agent = new Agent(session);
 
-  let avatar: BlobRef | null = null;
+  let blob: BlobRef | null = null;
   if (body.avatar) {
     const [meta, data] = body.avatar.split(',');
 
@@ -37,49 +40,54 @@ export const route: Route<at.ducs.users.updateProfile.$Output> = async (c) => {
     const res = await agent.uploadBlob(buffer, { encoding: mimeType });
     if (!res.success) throw new HTTPException(500, { message: 'avatarUploadFailed' });
 
-    avatar = res.data.blob;
+    blob = res.data.blob;
   }
 
   const doc = await resolveDid(auth.did);
   if (!doc) throw new HTTPException(500);
 
-  const profile = await getProfileRecord(doc);
+  const handle = await resolveHandleByDidDoc(doc);
+  if (!handle) throw new HTTPException(500);
+
+  const profileRecord = await getProfileRecord(doc);
 
   const record = at.ducs.actor.profile.$build({
-    avatar: avatar
+    avatar: blob
       ? {
         $type: 'blob',
-        mimeType: avatar.mimeType,
-        ref: avatar.ref,
-        size: avatar.size
+        mimeType: blob.mimeType,
+        ref: blob.ref,
+        size: blob.size
       }
-      : avatar === null
+      : blob === null
         ? undefined
-        : profile?.avatar,
+        : profileRecord?.avatar,
         
     displayName: body.displayName
       ? body.displayName
       : body.displayName === null
         ? undefined
-        : profile?.displayName
+        : profileRecord?.displayName
   });
 
   const updatedProfile = await setProfileRecord(auth.did, record);
   if (!updatedProfile) throw new HTTPException(500, { message: 'profileUpdateFailed' });
 
+  const avatar = record.avatar 
+    ? buildAvatarUri(auth.did, record.avatar.ref.toString())
+    : undefined
+
+  const profile = {
+    did: auth.did,
+    handle,
+    displayName: record.displayName,
+    avatar
+  }
+  
+  await redis.setProfile(profile);
+
   return c.json({
     encoding: 'application/json',
-    body: {
-      $type: 'at.ducs.actor.profile',
-      displayName: record.displayName,
-      avatar: record.avatar 
-        ? {
-          $type: 'blob',
-          mimeType: record.avatar.mimeType,
-          ref: record.avatar.ref,
-          size: record.avatar.size
-        }
-        : undefined
-    }
+    body: profile
   })
 }
