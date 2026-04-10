@@ -1,12 +1,14 @@
 import { pgEnum, pgTable, primaryKey, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { authorities } from './authorites';
-import { DidString } from '@atproto/lex';
+import { DidString, UriString } from '@atproto/lex';
 
 export const users = pgTable("users", {
   did: varchar().$type<DidString>().primaryKey(),
   handle: varchar().notNull(),
+  displayName: varchar(),
+  avatar: varchar().$type<UriString>(),
+  homeHost: varchar().references(() => authorities.host),
 
-  authorityHost: varchar().references(() => authorities.host),
   indexedAt: timestamp(),
 });
 

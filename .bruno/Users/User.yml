@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{xrpc}}.users.getUser?id={{handle}}"
+  url: "{{xrpc}}.users.getProfiles?id={{handle}}"
   params:
     - name: id
       value: "{{handle}}"

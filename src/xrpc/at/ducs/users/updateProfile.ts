@@ -5,12 +5,12 @@ import { Auth } from '@lib/oauth/session';
 import { getOAuthClient } from '@lib/oauth/client';
 import { Agent, BlobRef } from '@atproto/api';
 import { HTTPException } from 'hono/http-exception';
-import { getProfile, setProfile } from '../actor/profile.util';
-
-const ACCEPTED_MIME = ['image/png', 'image/jpeg'];
+import { getProfileRecord, setProfileRecord } from '../actor/profile.util';
+import { env } from '@lib/env';
 
 export const scopes = [
-  'repo:at.ducs.actor.profile'
+  'repo:at.ducs.actor.profile',
+  ...env.CAT_ACCEPT_MIMETYPE.map(t => 'blob:' + t)
 ];
 
 // @ts-ignore TODO: figure out output type error
@@ -29,7 +29,7 @@ export const route: Route<at.ducs.users.updateProfile.$Output> = async (c) => {
     const mimeMatch = meta.match(/data:(.*);base64/);
     const mimeType = mimeMatch ? mimeMatch[1] : null;
     
-    if (!mimeType || !ACCEPTED_MIME.includes(mimeType)) throw new HTTPException(400, { message: 'invalidAvatarData' });
+    if (!mimeType || !env.CAT_ACCEPT_MIMETYPE.includes(mimeType)) throw new HTTPException(400, { message: 'invalidAvatarData' });
 
     const buffer = Buffer.from(data, 'base64');
 
@@ -39,7 +39,7 @@ export const route: Route<at.ducs.users.updateProfile.$Output> = async (c) => {
     avatar = res.data.blob;
   }
 
-  const profile = await getProfile(auth.did);
+  const profile = await getProfileRecord(auth.did);
 
   const record = at.ducs.actor.profile.$build({
     avatar: avatar
@@ -60,7 +60,7 @@ export const route: Route<at.ducs.users.updateProfile.$Output> = async (c) => {
         : profile?.displayName
   });
 
-  const updatedProfile = await setProfile(auth.did, record);
+  const updatedProfile = await setProfileRecord(auth.did, record);
   if (!updatedProfile) throw new HTTPException(500, { message: 'profileUpdateFailed' });
 
   return c.json({

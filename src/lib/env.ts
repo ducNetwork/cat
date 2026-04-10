@@ -8,6 +8,12 @@ const envSchema = z.object({
   CAT_DATABASE_URL: z.string(),
   CAT_REDIS_URL: z.string(),
   CAT_JWK_PATH: z.string().optional(),
+  CAT_BLOB_PATH: z.string().default('./blobs'),
+  CAT_ACCEPT_BLOBTYPE: z.string()
+    .transform(s => s.replaceAll(', ', ',').split(','))
+    .default(['image/png=png', 'image/jpeg=jpg/jpeg']),
+
+  CAT_PROFILE_INDEX_TIMEOUT: z.number().default(60),
 
   AT_OAUTH_CALLBACK: z.string(),
   AT_RESOLVER_URL: z.url()
@@ -20,5 +26,7 @@ const rawEnv = envSchema.parse(Bun.env);
 export const env = {
   ...rawEnv,
 
+  CAT_ACCEPT_MIMETYPE: rawEnv.CAT_ACCEPT_BLOBTYPE.map(t => t.split('=')[0]),
+  CAT_ACCEPT_EXT: rawEnv.CAT_ACCEPT_BLOBTYPE.map(t => t.split('=')[1].split('/')).flat(),
   JWK_ALG: "ES256"
 };

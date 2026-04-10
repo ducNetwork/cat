@@ -5,6 +5,7 @@ node_modules/
 generated/
 build/
 keys/
+blobs/
 
 # env
 .env

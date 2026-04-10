@@ -3,8 +3,8 @@ import { RouteManager } from '@lib/routes'
 import { Hono } from 'hono'
 
 const rm = new RouteManager(__dirname);
-await rm.loadLex('./routes');
-await rm.loadRoutes('./routes');
+await rm.loadLex('./xrpc');
+await rm.loadRoutes('./xrpc');
 
 const app = new Hono()
 

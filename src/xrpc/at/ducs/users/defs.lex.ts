@@ -8,10 +8,7 @@ export const lexicon: Lexicon = {
         did: { type: 'string', format: 'did' },
         handle: { type: 'string', format: 'handle' },
         displayName: { type: 'string' },
-        avatar: { 
-          type: 'ref',
-          ref: 'at.ducs.users.defs#avatar'
-        }
+        avatar: { type: 'string', format: 'uri' }
       },
       required: ['did', 'handle']
     },

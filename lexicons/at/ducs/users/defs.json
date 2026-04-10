@@ -15,8 +15,8 @@
           "type": "string"
         },
         "avatar": {
-          "type": "ref",
-          "ref": "at.ducs.users.defs#avatar"
+          "type": "string",
+          "format": "uri"
         }
       },
       "required": [
