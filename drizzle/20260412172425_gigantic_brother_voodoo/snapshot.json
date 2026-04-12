@@ -1,0 +1,688 @@
+{
+  "version": "8",
+  "dialect": "postgres",
+  "id": "20a093a4-767b-49d0-b06c-9a5a5e651e45",
+  "prevIds": [
+    "ac1e9100-3cbc-4db6-ad43-0ab21d3183c4"
+  ],
+  "ddl": [
+    {
+      "values": [
+        "pending",
+        "active"
+      ],
+      "name": "channelMembershipStatus",
+      "entityType": "enums",
+      "schema": "public"
+    },
+    {
+      "values": [
+        "pending",
+        "active"
+      ],
+      "name": "relationshipStatus",
+      "entityType": "enums",
+      "schema": "public"
+    },
+    {
+      "values": [
+        "friend",
+        "blocked"
+      ],
+      "name": "relationshipType",
+      "entityType": "enums",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "authorities",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "channelMemberships",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "channels",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "messages",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "atproto_auth_sessions",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "atproto_auth_states",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "auth_sessions",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "auth_settings",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "relationships",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "users",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "host",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "authorities"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "channelTid",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "channelMemberships"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "userDid",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "channelMemberships"
+    },
+    {
+      "type": "channelMembershipStatus",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'active'",
+      "generated": null,
+      "identity": null,
+      "name": "status",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "channelMemberships"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "tid",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "channels"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "name",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "channels"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "parentTid",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "channels"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "tid",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "messages"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "authorDid",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "messages"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "channelTid",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "messages"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "body",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "messages"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "did",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "atproto_auth_sessions"
+    },
+    {
+      "type": "jsonb",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "data",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "atproto_auth_sessions"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "key",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "atproto_auth_states"
+    },
+    {
+      "type": "jsonb",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "data",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "atproto_auth_states"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "userDid",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "auth_sessions"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "token",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "auth_sessions"
+    },
+    {
+      "type": "timestamp",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "createdAt",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "auth_sessions"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "userDid",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "auth_settings"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "authId",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "auth_settings"
+    },
+    {
+      "type": "relationshipType",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "type",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "relationships"
+    },
+    {
+      "type": "relationshipStatus",
+      "typeSchema": "public",
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "status",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "relationships"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "fromDid",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "relationships"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "toDid",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "relationships"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "did",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "users"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "handle",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "users"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "displayName",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "users"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "avatar",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "users"
+    },
+    {
+      "type": "varchar",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "homeHost",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "users"
+    },
+    {
+      "type": "timestamp",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "indexedAt",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "users"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "authorDid"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "did"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "SET NULL",
+      "name": "messages_authorDid_users_did_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "messages"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "channelTid"
+      ],
+      "schemaTo": "public",
+      "tableTo": "channels",
+      "columnsTo": [
+        "tid"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "name": "messages_channelTid_channels_tid_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "messages"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "userDid"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "did"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "name": "auth_sessions_userDid_users_did_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "auth_sessions"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "userDid"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "did"
+      ],
+      "onUpdate": "CASCADE",
+      "onDelete": "CASCADE",
+      "name": "auth_settings_userDid_users_did_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "auth_settings"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "fromDid"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "did"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "relationships_fromDid_users_did_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "relationships"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "toDid"
+      ],
+      "schemaTo": "public",
+      "tableTo": "users",
+      "columnsTo": [
+        "did"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "relationships_toDid_users_did_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "relationships"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "homeHost"
+      ],
+      "schemaTo": "public",
+      "tableTo": "authorities",
+      "columnsTo": [
+        "host"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "users_authorityHost_authorities_host_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "users"
+    },
+    {
+      "columns": [
+        "fromDid",
+        "toDid"
+      ],
+      "nameExplicit": false,
+      "name": "relationships_pkey",
+      "entityType": "pks",
+      "schema": "public",
+      "table": "relationships"
+    },
+    {
+      "columns": [
+        "host"
+      ],
+      "nameExplicit": false,
+      "name": "authorities_pkey",
+      "schema": "public",
+      "table": "authorities",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "tid"
+      ],
+      "nameExplicit": false,
+      "name": "channels_pkey",
+      "schema": "public",
+      "table": "channels",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "tid"
+      ],
+      "nameExplicit": false,
+      "name": "messages_pkey",
+      "schema": "public",
+      "table": "messages",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "did"
+      ],
+      "nameExplicit": false,
+      "name": "atproto_auth_sessions_pkey",
+      "schema": "public",
+      "table": "atproto_auth_sessions",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "key"
+      ],
+      "nameExplicit": false,
+      "name": "atproto_auth_states_pkey",
+      "schema": "public",
+      "table": "atproto_auth_states",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "token"
+      ],
+      "nameExplicit": false,
+      "name": "auth_sessions_pkey",
+      "schema": "public",
+      "table": "auth_sessions",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "did"
+      ],
+      "nameExplicit": false,
+      "name": "users_pkey",
+      "schema": "public",
+      "table": "users",
+      "entityType": "pks"
+    }
+  ],
+  "renames": []
+}
