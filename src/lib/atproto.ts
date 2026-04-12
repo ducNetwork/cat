@@ -1,5 +1,6 @@
-import { createDidResolver, createHandleResolver, Did } from '@atproto/oauth-client-node';
+import { AtprotoIdentityDidMethods, createDidResolver, createHandleResolver, Did, DidDocument } from '@atproto/oauth-client-node';
 import { env } from './env';
+import { resolveHandleByDidDoc } from '../xrpc/at/ducs/users/getProfiles.util';
 
 export async function resolveDid(did: Did) {
   const doc = await createDidResolver({}).resolve(did);

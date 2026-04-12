@@ -24,15 +24,15 @@ export const lexicon: Lexicon = {
         schema: {
           type: 'object',
           properties: {
-            refreshToken: { type: 'string' },
-            accessToken: { type: 'string' }
+            redirectToken: { type: 'string' }
           },
-          required: ['refreshToken', 'accessToken']
+          required: ['redirectToken']
         }
       },
 
       errors: [
-        { name: 'invalidSession' }
+        { name: 'InvalidSession' },
+        { name: 'InvalidState' }
       ]
     }
   }

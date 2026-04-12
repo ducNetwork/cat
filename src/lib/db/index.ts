@@ -4,7 +4,7 @@ import { env } from '@lib/env';
 import { authorities } from './schema/authorites';
 import { relationships, users } from './schema/users';
 import { atproto_auth_session, atproto_auth_states, auth_sessions, auth_settings } from './schema/oauth';
-import { channelMemberships, channels } from './schema/channels';
+import { channelMemberships, channels, messages } from './schema/channels';
 
 const relations = defineRelations({
   atproto_auth_session,
@@ -18,6 +18,7 @@ const relations = defineRelations({
 
   channels,
   channelMemberships,
+  messages
 }, (r) => ({
   auth_sessions: {
     user: r.one.users({
@@ -78,4 +79,5 @@ export const DB = {
 
   channels,
   channelMemberships,
+  messages
 }

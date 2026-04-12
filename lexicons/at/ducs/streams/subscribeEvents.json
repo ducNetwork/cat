@@ -1,0 +1,15 @@
+{
+  "defs": {
+    "main": {
+      "type": "subscription",
+      "message": {
+        "schema": {
+          "type": "union",
+          "refs": []
+        }
+      }
+    }
+  },
+  "id": "at.ducs.streams.subscribeEvents",
+  "lexicon": 1
+}

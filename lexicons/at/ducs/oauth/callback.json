@@ -35,22 +35,21 @@
         "schema": {
           "type": "object",
           "properties": {
-            "refreshToken": {
-              "type": "string"
-            },
-            "accessToken": {
+            "redirectToken": {
               "type": "string"
             }
           },
           "required": [
-            "refreshToken",
-            "accessToken"
+            "redirectToken"
           ]
         }
       },
       "errors": [
         {
-          "name": "invalidSession"
+          "name": "InvalidSession"
+        },
+        {
+          "name": "InvalidState"
         }
       ]
     }

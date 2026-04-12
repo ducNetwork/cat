@@ -10,6 +10,28 @@ export const lexicon: Lexicon = {
         parentTid: { type: 'string', format: 'tid' }
       },
       required: ['tid']
+    },
+
+    attachment: {
+      type: 'object',
+      properties: {
+        href: { type: 'string', format: 'uri' },
+        mimeType: { type: 'string' },
+        size: { type: 'integer' }
+      },
+      required: ['href', 'mimeType', 'size']
+    },
+
+    message: {
+      type: 'object',
+      properties: {
+        tid: { type: 'string', format: 'tid' },
+        authorDid: { type: 'string', format: 'did' },
+        channelTid: { type: 'string', format: 'tid' },
+
+        body: { type: 'string' }
+      },
+      required: ['tid', 'channelTid']
     }
   }
 }

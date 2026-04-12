@@ -28,7 +28,7 @@ export async function getProfile(id: AtIdentifierString): Promise<at.ducs.users.
   if (!handle) return null;
 
   const profileRecord = await getProfileRecord(doc);
-  if (!profileRecord) return null;
+  if (!profileRecord) return { did, handle };
 
   const profile = {
     did,
