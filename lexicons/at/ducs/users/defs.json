@@ -21,7 +21,13 @@
       },
       "required": [
         "did",
-        "handle"
+        "handle",
+        "displayName",
+        "avatar"
+      ],
+      "nullable": [
+        "displayName",
+        "avatar"
       ]
     },
     "avatar": {

@@ -1,5 +1,5 @@
-import { DidString, TidString } from '@atproto/lex';
-import { pgEnum, pgTable, varchar } from 'drizzle-orm/pg-core';
+import { DidString, TidString, UriString } from '@atproto/lex';
+import { boolean, pgEnum, pgTable, varchar } from 'drizzle-orm/pg-core';
 import { users } from './users';
 
 export const channels = pgTable('channels', {
@@ -7,6 +7,9 @@ export const channels = pgTable('channels', {
   name: varchar(),
 
   parentTid: varchar().$type<TidString>(),
+  
+  shared: boolean(),
+  host: varchar()
 });
 
 export const messages = pgTable('messages', {

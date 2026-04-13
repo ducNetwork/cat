@@ -73,7 +73,7 @@ export class RedisPublisher {
     }
   }
 
-  async setProfile(profile: at.ducs.users.defs.Profile) {
+  async cacheProfile(profile: at.ducs.users.defs.Profile) {
     await this.setKeys({
       [`profile/${profile.did}`]: JSON.stringify(profile),
       [`profile/${profile.handle}`]: JSON.stringify(profile),
@@ -88,26 +88,27 @@ export class RedisPublisher {
       .where(eq(DB.users.did, profile.did));
   }
 
-  async getProfile(id: AtIdentifierString) {
-    const redisProfile = await this.client.get(`profile/${id}`);;
+  async getProfile(id: AtIdentifierString): Promise<at.ducs.users.defs.Profile | null> {
+    // check for cached profile
+    const redisProfile = await this.client.get(`profile/${id}`);
     if (redisProfile) return JSON.parse(redisProfile) as at.ducs.users.defs.Profile;
 
+    // check for saved profile
     const databaseProfile = await db.query.users.findFirst({
       where: id.startsWith('did:plc:')
         ? { did: id as DidString }
         : { handle: id as HandleString }
     });
 
+    // only return DB profile if within TTL
     if (
       databaseProfile && 
       (databaseProfile.indexedAt.getTime() + (env.CAT_PROFILE_INDEX_TTL * 1000)) > Date.now()
-    ) return {
-      did: databaseProfile.did,
-      handle: databaseProfile.handle,
-      displayName: databaseProfile.displayName ?? undefined,
-      avatar: databaseProfile.avatar ?? undefined
+    ) {
+      return databaseProfile;
     }
 
+    // return null if not found
     return null;
   }
 }

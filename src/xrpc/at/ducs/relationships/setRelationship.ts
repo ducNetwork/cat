@@ -5,7 +5,7 @@ import { $lex } from '@lib/lexicons';
 import { DB, db } from '@lib/db';
 import { HTTPException } from 'hono/http-exception';
 import { and, eq, or } from 'drizzle-orm';
-import { DidString } from '@atproto/lex';
+import { DidString, HandleString } from '@atproto/lex';
 
 export const route: Route<at.ducs.relationships.setRelationship.$Output> = async (c) => {
   const fromId = await Auth(c);
@@ -13,7 +13,7 @@ export const route: Route<at.ducs.relationships.setRelationship.$Output> = async
 
   const toId = body.userId.startsWith('did:plc:')
     ? { did: body.userId as DidString }
-    : { handle: body.userId }
+    : { handle: body.userId as HandleString }
   
   const toUser = await db.query.users.findFirst({
     where: toId

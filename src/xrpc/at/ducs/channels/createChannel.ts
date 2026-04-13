@@ -4,7 +4,7 @@ import { Auth } from '@lib/oauth/session';
 import { DB, db } from '@lib/db';
 import { $lex } from '@lib/lexicons';
 import { tid } from '@lib/tid';
-import { DidString } from '@atproto/lex';
+import { DidString, HandleString } from '@atproto/lex';
 
 export const route: Route<at.ducs.channels.createChannel.$Output> = async (c) => {
   const auth = await Auth(c);
@@ -22,7 +22,7 @@ export const route: Route<at.ducs.channels.createChannel.$Output> = async (c) =>
   for (const member of [auth.did, ...body.members]) {
     const memberId = member.startsWith('did:plc:')
       ? { did: member as DidString }
-      : { handle: member };
+      : { handle: member as HandleString };
     
     const user = await db.query.users.findFirst({
       where: memberId

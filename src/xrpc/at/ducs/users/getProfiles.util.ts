@@ -3,7 +3,6 @@ import { AtprotoIdentityDidMethods, DidDocument } from '@atproto/oauth-client-no
 import { resolveDid, resolveDidByHandle } from '@lib/atproto';
 import { getProfileRecord } from '../actor/profile.util';
 import { redis } from '@lib/redis';
-import { db } from '@lib/db';
 import * as at from '@lexicons/at';
 
 export function buildAvatarUri(did: DidString, cid: CidString): UriString {
@@ -13,33 +12,47 @@ export function buildAvatarUri(did: DidString, cid: CidString): UriString {
 export async function getProfile(id: AtIdentifierString): Promise<at.ducs.users.defs.Profile | null> {
   const isDid = id.startsWith('did:plc:');
 
+  // check for cached profile
   const cachedProfile = await redis.getProfile(id);
   if (cachedProfile) return cachedProfile;
 
+  // get DID document by ID
   const doc = isDid
     ? await resolveDid(id as DidString)
     : await resolveDidByHandle(id);
   if (!doc) return null;
 
+  // extract DID and handle
   const did = doc.id;
   const handle = !isDid
     ? id as HandleString
     : await resolveHandleByDidDoc(doc);
   if (!handle) return null;
 
-  const profileRecord = await getProfileRecord(doc);
-  if (!profileRecord) return { did, handle };
-
-  const profile = {
+  // build partial profile
+  let profile = at.ducs.users.defs.profile.$build({
     did,
     handle,
-    displayName: profileRecord.displayName,
+    displayName: null,
+    avatar: null
+  })
+
+  // lookup profile, return partial if not found
+  const profileRecord = await getProfileRecord(doc);
+  if (!profileRecord) return profile;
+
+  // build full profile
+  profile = {
+    ...profile,
+
+    displayName: profileRecord.displayName ?? null,
     avatar: profileRecord.avatar
       ? buildAvatarUri(did, profileRecord.avatar.ref.toString())
-      : undefined
+      : null
   };
 
-  await redis.setProfile(profile);
+  // cache profile
+  await redis.cacheProfile(profile);
 
   return profile;
 }

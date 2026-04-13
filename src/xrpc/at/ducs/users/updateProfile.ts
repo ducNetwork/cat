@@ -73,18 +73,16 @@ export const route: Route<at.ducs.users.updateProfile.$Output> = async (c) => {
   const updatedProfile = await setProfileRecord(auth.did, record);
   if (!updatedProfile) throw new HTTPException(500, { message: 'profileUpdateFailed' });
 
-  const avatar = record.avatar 
-    ? buildAvatarUri(auth.did, record.avatar.ref.toString())
-    : undefined
-
   const profile = {
     did: auth.did,
     handle,
-    displayName: record.displayName,
-    avatar
+    displayName: record.displayName ?? null,
+    avatar: record.avatar 
+      ? buildAvatarUri(auth.did, record.avatar.ref.toString())
+      : null
   }
   
-  await redis.setProfile(profile);
+  await redis.cacheProfile(profile);
 
   return c.json({
     encoding: 'application/json',

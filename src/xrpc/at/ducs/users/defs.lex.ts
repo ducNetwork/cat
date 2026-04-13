@@ -10,7 +10,8 @@ export const lexicon: Lexicon = {
         displayName: { type: 'string' },
         avatar: { type: 'string', format: 'uri' }
       },
-      required: ['did', 'handle']
+      required: ['did', 'handle', 'displayName', 'avatar'],
+      nullable: ['displayName', 'avatar']
     },
 
     avatar: {
