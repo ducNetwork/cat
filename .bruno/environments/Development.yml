@@ -4,12 +4,14 @@ variables:
     name: handle
   - name: origin
     value: https://msg.fish
+    disabled: true
   - name: origin
     value: http://127.0.0.1:3000
-    disabled: true
   - name: xrpc
     value: "{{origin}}/xrpc/at.ducs"
   - secret: true
     name: refreshToken
   - secret: true
     name: accessToken
+  - secret: true
+    name: redirectToken

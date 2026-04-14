@@ -60,12 +60,14 @@ export async function getProfile(id: AtIdentifierString): Promise<at.ducs.users.
 export async function resolveHandleByDidDoc(doc: DidDocument<AtprotoIdentityDidMethods>) {
   const did = doc.id;
 
-  for (const aka in doc.alsoKnownAs) {
-    if (aka.startsWith('at://')) {
-      const handle = aka.replace('at://', '') as HandleString;
-      const isValid = await validateHandle(did, handle);
+  if (doc.alsoKnownAs) {
+    for (const aka of doc.alsoKnownAs) {
+      if (aka.startsWith('at://')) {
+        const handle = aka.replace('at://', '') as HandleString;
+        const isValid = await validateHandle(did, handle);
 
-      if (isValid) return handle;
+        if (isValid) return handle;
+      }
     }
   }
 

@@ -19,17 +19,6 @@ export const lexicon: Lexicon = {
         required: ['code', 'state']
       },
 
-      output: {
-        encoding: 'application/json',
-        schema: {
-          type: 'object',
-          properties: {
-            redirectToken: { type: 'string' }
-          },
-          required: ['redirectToken']
-        }
-      },
-
       errors: [
         { name: 'InvalidSession' },
         { name: 'InvalidState' }

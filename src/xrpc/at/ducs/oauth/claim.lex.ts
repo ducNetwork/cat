@@ -5,17 +5,6 @@ export const lexicon: Lexicon = {
     main: {
       type: 'procedure',
 
-      input: {
-        encoding: 'application/json',
-        schema: {
-          type: 'object',
-          properties: {
-            redirectToken: { type: 'string' }
-          },
-          required: ['redirectToken']
-        }
-      },
-
       output: {
         encoding: 'application/json',
         schema: {

@@ -1,0 +1,17 @@
+info:
+  name: Claim
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{xrpc}}.oauth.claim"
+  auth:
+    type: bearer
+    token: "{{redirectToken}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

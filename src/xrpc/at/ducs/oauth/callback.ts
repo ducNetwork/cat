@@ -19,15 +19,15 @@ interface AuthorizationState {
   redirect_uri?: string
 }
 
-export const route: Route<at.ducs.oauth.callback.$Output> = async (c) => {
+export const route: Route = async (c) => {
   const query = $lex(at.ducs.oauth.callback.$params, c.req.query());
 
   const client = await getOAuthClient();
   const authorization = await client.callback(new URLSearchParams(query));
-  if (!authorization.state) throw new HTTPException(404, { message: 'InvalidState' });
+  if (!authorization.state) throw new HTTPException(400, { message: 'InvalidState' });
 
   const state: AuthorizationState = JSON.parse(authorization.state);
-  if (!state.redirect_uri) throw new HTTPException(404, { message: 'InvalidState' });
+  if (!state.redirect_uri) throw new HTTPException(400, { message: 'InvalidState' });
 
   const doc = await resolveDid(authorization.session.did);
   if (!doc) throw new HTTPException(404, { message: 'InvalidSession' });
@@ -73,10 +73,8 @@ export const route: Route<at.ducs.oauth.callback.$Output> = async (c) => {
 
   redirectTokens.set(redirectToken, [refreshToken, accessToken]);
 
-  return c.json({
-    encoding: 'application/json',
-    body: {
-      redirectToken
-    }
-  }) 
+  const redirect = new URL(state.redirect_uri);
+  redirect.searchParams.set('token', redirectToken);
+
+  return c.redirect(redirect, 303);
 }

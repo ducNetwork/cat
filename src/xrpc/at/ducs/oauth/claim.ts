@@ -1,16 +1,18 @@
 import * as at from '@lexicons/at';
 
-import { $lex } from '@lib/lexicons';
 import { Route } from '@lib/routes';
 import { HTTPException } from 'hono/http-exception';
 
 export const redirectTokens = new Map<string, [string, string]>();
 
 export const route: Route<at.ducs.oauth.claim.$Output> = async (c) => {
-  const body = $lex(at.ducs.oauth.claim.$input.schema, await c.req.json());
+  const redirectToken = c.req.header('Authorization')?.replace('Bearer ', '');
+  if (!redirectToken) throw new HTTPException(401);
 
-  const tokens = redirectTokens.get(body.redirectToken);
+  const tokens = redirectTokens.get(redirectToken);
   if (!tokens) throw new HTTPException(404, { message: 'InvalidRedirectToken' });
+  
+  redirectTokens.delete(redirectToken);
 
   return c.json({
     encoding: 'application/json',
