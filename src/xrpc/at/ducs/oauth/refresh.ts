@@ -5,7 +5,7 @@ import { DB, db } from '@lib/db';
 import { tid } from '@lib/tid';
 import { generateAccessToken } from '@lib/oauth/tokens';
 
-export const route: Route<at.ducs.oauth.refreshAccess.$Output> = async (c) => {
+export const route: Route<at.ducs.oauth.refresh.$Output> = async (c) => {
   const refreshToken = c.req.header('Authorization')?.replace('Bearer ', '');
   if (!refreshToken) throw new HTTPException(401);
 

@@ -18,6 +18,6 @@
       }
     }
   },
-  "id": "at.ducs.oauth.refreshAccess",
+  "id": "at.ducs.oauth.refresh",
   "lexicon": 1
 }
